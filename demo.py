@@ -8,42 +8,58 @@ import pandas as pd
 # ind_ecue_fin_ult1,ind_fond_fin_ult1,ind_hip_fin_ult1,ind_plan_fin_ult1,ind_pres_fin_ult1,ind_reca_fin_ult1,
 # ind_tjcr_fin_ult1,ind_valo_fin_ult1,ind_viv_fin_ult1,ind_nomina_ult1,ind_nom_pens_ult1,ind_recibo_ult1
 
-train_file = 'dataset/2015-01-28_treated.csv'
-info = pd.read_csv(train_file,engine='c')
+train_file = 'dataset/2015-01-28_label.csv'
+info = pd.read_csv(train_file,engine='c',dtype=float)
 # print info['ind_ahor_fin_ult1'].describe
 # print info.head()
 
+print info.describe()
 print info.dtypes
-print 'ind_empleado'
-print info['ind_empleado'].unique()
-print 'pais_residencia'
-print info['pais_residencia'].unique()
-print 'sexo'
-print info['sexo'].unique()
-print 'antiguedad'
-print info['antiguedad'].unique()
-print 'ult_fec_cli_1t'
-print info['ult_fec_cli_1t'].unique()
-print 'indrel_1mes'
-print info['indrel_1mes'].unique()
-print 'tiprel_1mes'
-print info['tiprel_1mes'].unique()
-print 'indresi'
-print info['indresi'].unique()
-print 'indext'
-print info['indext'].unique()
-print 'conyuemp'
-print info['conyuemp'].unique()
-print 'canal_entrada'
-print info['canal_entrada'].unique()
-print 'indfall'
-print info['indfall'].unique()
-print 'nomprov'
-print info['nomprov'].unique()
-print 'segmento'
-print info['segmento'].unique()
-
-
+# print info['tiprel_1mes'].unique()
+# print info['indresi_N'].sum()
+# print info['indresi_S'].sum()
+# print info['indext_N'].sum()
+# print info['indext_S'].sum()
+#
+# print info['indresi'].unique()
+# print info['indext'].unique()
+# # # print info['sexo'].unique()
+# # print info['sexo_H'].sum()
+# print info['sexo_U'].sum()
+# print info['sexo_V'].sum()
+#
+#
+# # print info.groupby(['sexo']).count()
+# # print 'ind_empleado'
+# print info['ind_empleado'].unique()
+# print 'pais_residencia'
+# print info['pais_residencia'].unique()
+# print 'sexo'
+# print info['sexo'].unique()
+# print 'antiguedad'
+# print info['antiguedad'].unique()
+# print 'ult_fec_cli_1t'
+# print info['ult_fec_cli_1t'].unique()
+# print 'indrel_1mes'
+# print info['indrel_1mes'].unique()
+# print 'tiprel_1mes'
+# print info['tiprel_1mes'].unique()
+# print 'indresi'
+# print info['indresi'].unique()
+# print 'indext'
+# print info['indext'].unique()
+# print 'conyuemp'
+# print info['conyuemp'].unique()
+# print 'canal_entrada'
+# print info['canal_entrada'].unique()
+# print 'indfall'
+# print info['indfall'].unique()
+# print 'nomprov'
+# print info['nomprov'].unique()
+# print 'segmento'
+# print info['segmento'].unique()
+#
+# print info['ind_actividad_cliente']
 
 # print info['ind_empleado'].unique()
 # print info.dtypes

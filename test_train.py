@@ -1,61 +1,36 @@
-import xgboost as xgb
+from sklearn.datasets import make_hastie_10_2
+from sklearn.ensemble import GradientBoostingClassifier
 import pandas as pd
-import time
 import numpy as np
 
+mouth_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28','2015-06-28','2015-07-28'
+              ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
+              ,'2016-03-28','2016-04-28','2016-05-28']
 
-now = time.time()
+for i in range(24):
 
-dataset = pd.read_csv("2015-01-28_treated.csv")
+    clf = GradientBoostingClassifier(n_estimators=100, learning_rate=0.7, max_depth=10, random_state=0)
 
-train = dataset.iloc[:,2:].values
+    for item in mouth_list:
+        print item
 
-dataset = pd.read_csv("2015-01-28_treated.csv")
-labels = dataset.iloc[:,1].values
+        train_set = pd.read_csv('dataset/'+item+'_treated.csv')
+        train_label = pd.read_csv('dataset/'+item+'_label.csv')
 
-tests = pd.read_csv("2015-02-28_treated.csv")
-#test_id = range(len(tests))
-test = tests.iloc[:,2:].values
+        train_set = train_set.iloc[:600000,1:].values
+        train_label = train_label.iloc[:600000,i+9].values
 
+        test_set = pd.read_csv('dataset/2016-04-28_treated.csv')
+        test_label = pd.read_csv('dataset/2016-04-28_label.csv')
 
-params={
-'booster':'gbtree',
+        test_set = test_set.iloc[:5000,1:].values
+        test_label = test_label.iloc[:5000,i+9].values
 
-'objective': 'multi:softmax',
-'num_class':10,
-'gamma':0.05,
-'max_depth':12,
-'subsample':0.4,
-'colsample_bytree':0.7,
-'silent':1 ,
-'eta': 0.005,
-'seed':710,
-'nthread':4,
-}
+        train_set = np.split(train_set,10,axis=0)
+        train_label = np.split(train_label,10,axis=0)
 
-plst = list(params.items())
+        for batch in range(len(train_set)):
+            clf.fit(train_set[batch],train_label[batch])
+            print clf.score(test_set, test_label)
 
-#Using 10000 rows for early stopping.
-offset = 35000
-
-num_rounds = 500
-
-xgtest = xgb.DMatrix(test)
-
-xgtrain = xgb.DMatrix(train[:offset,:], label=labels[:offset])
-xgval = xgb.DMatrix(train[offset:,:], label=labels[offset:])
-
-
-watchlist = [(xgtrain, 'train'),(xgval, 'val')]
-
-
-# training model
-model = xgb.train(plst, xgtrain, num_rounds, watchlist,early_stopping_rounds=100)
-preds = model.predict(xgtest,ntree_limit=model.best_iteration)
-
-np.savetxt('submission_xgb_MultiSoftmax.csv',np.c_[range(1,len(test)+1),preds],
-                delimiter=',',header='ImageId,Label',comments='',fmt='%d')
-
-
-cost_time = time.time()-now
-print "end ......",'\n',"cost time:",cost_time,"(s)......"
+    clf.predict(test_set[:5000])

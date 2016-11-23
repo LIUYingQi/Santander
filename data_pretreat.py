@@ -10,36 +10,132 @@ mouth_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28','
 for item in mouth_list:
     print item
     df = pd.read_csv('dataset/'+item+".csv",dtype={"sexo":str,"ind_nuevo":str,"ult_fec_cli_1t":str,
-                                         "indext":str})
+                                         "indext":str,"antiguedad":str,"indrel_1mes":str,"tiprel_1mes":str,
+                                                   "indresi":str,"indext":str,"indfall":str,"conyuemp":str})
 
+    # total rows
+    print len(df['ncodpers'].unique())
+    count = len(df['ncodpers'].unique())
+
+    # drop some bad data ( dont worry we got enough data )
+    df.drop('ult_fec_cli_1t',axis=1,inplace=True)
+    df.drop(["tipodom","cod_prov"],axis=1,inplace=True)
+
+    # chnage time format
     df["fecha_dato"] = pd.to_datetime(df["fecha_dato"],format="%Y-%m-%d")
     df["fecha_alta"] = pd.to_datetime(df["fecha_alta"],format="%Y-%m-%d")
-    df["age"] = pd.to_numeric(df["age"], errors="coerce")
 
+    # sexo
+    df['sexo_H']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['sexo_V']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['sexo']=='H','sexo_H'] = 1
+    df.loc[df['sexo']=='V','sexo_V'] = 1
+    df.drop('sexo',axis=1,inplace=True)
+
+    # ind_empleado
+    df['ind_empleado_N']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['ind_empleado_A']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['ind_empleado_S']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['ind_empleado_F']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['ind_empleado_B']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['ind_empleado']=='N','ind_empleado_N'] = 1
+    df.loc[df['ind_empleado']=='A','ind_empleado_A'] = 1
+    df.loc[df['ind_empleado']=='S','ind_empleado_S'] = 1
+    df.loc[df['ind_empleado']=='F','ind_empleado_F'] = 1
+    df.loc[df['ind_empleado']=='B','ind_empleado_B'] = 1
+    df.drop('ind_empleado',axis=1,inplace=True)
+
+    # indrel_1mes
+    df['indrel_1mes_1']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indrel_1mes_2']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indrel_1mes_3']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indrel_1mes_4']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indrel_1mes_p']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['indrel_1mes']=='1','indrel_1mes_1'] = 1
+    df.loc[df['indrel_1mes']=='2','indrel_1mes_2'] = 1
+    df.loc[df['indrel_1mes']=='3','indrel_1mes_3'] = 1
+    df.loc[df['indrel_1mes']=='4','indrel_1mes_4'] = 1
+    df.loc[df['indrel_1mes']=='p','indrel_1mes_p'] = 1
+    df.drop('indrel_1mes',axis=1,inplace=True)
+
+    # tiprel_1mes
+    df['tiprel_1mes_A']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['tiprel_1mes_I']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['tiprel_1mes_P']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['tiprel_1mes']=='A','tiprel_1mes_A'] = 1
+    df.loc[df['tiprel_1mes']=='I','tiprel_1mes_I'] = 1
+    df.loc[df['tiprel_1mes']=='P','tiprel_1mes_P'] = 1
+    df.drop('tiprel_1mes',axis=1,inplace=True)
+
+    # segmento
+    df['segmento_1']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['segmento_2']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['segmento_3']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['segmento']=='01 - TOP','segmento_1'] = 1
+    df.loc[df['segmento']=='02 - PARTICULARES','segmento_2'] = 1
+    df.loc[df['segmento']=='03 - UNIVERSITARIO','segmento_3'] = 1
+    df.drop('segmento',axis=1,inplace=True)
+
+    # indresi
+    df['indresi_N']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indresi_S']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['indresi']=='N','indresi_N'] = 1
+    df.loc[df['indresi']=='S','indresi_S'] = 1
+    df.drop('indresi',axis=1,inplace=True)
+
+    # indext
+    df['indext_N']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indext_S']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['indext']=='N','indext_N'] = 1
+    df.loc[df['indext']=='S','indext_S'] = 1
+    df.drop('indext',axis=1,inplace=True)
+
+    # indext
+    df['indfall_N']=pd.Series(np.zeros(count,dtype=np.int8))
+    df['indfall_S']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['indfall']=='N','indfall_N'] = 1
+    df.loc[df['indfall']=='S','indfall_S'] = 1
+    df.drop('indfall',axis=1,inplace=True)
+
+    # conyuemp
+    df['conyuemp_S']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['conyuemp']=='S','conyuemp'] = 1
+    df.drop('conyuemp',axis=1,inplace=True)
+
+    # age to int
+    df["age"] = pd.to_numeric(df["age"], errors="coerce")
     df.loc[df.age < 18,"age"] = df.loc[(df.age >= 18) & (df.age <= 30),"age"].mean(skipna=True)
     df.loc[df.age > 100,"age"] = df.loc[(df.age >= 30) & (df.age <= 100),"age"].mean(skipna=True)
     df["age"].fillna(df["age"].mean(),inplace=True)
     df["age"] = df["age"].astype(int)
 
+    # ind_neuvo
     df.loc[df["ind_nuevo"].isnull(),"ind_nuevo"] = 1
 
-    df.loc[df.antiguedad.isnull(),"antiguedad"] = df.antiguedad.min()
-    df.loc[df.antiguedad <0, "antiguedad"] = 0
+    # antiguedad
+    df.loc[df.antiguedad=='     NA',"antiguedad"] = '      0'
+    df.loc[df.antiguedad=='-999999', "antiguedad"] = '      0'
+    df["antiguedad"] = df["antiguedad"].astype(int)
 
+    # fecha_alta
     dates=df.loc[:,"fecha_alta"].sort_values().reset_index()
     median_date = int(np.median(dates.index.values))
     df.loc[df.fecha_alta.isnull(),"fecha_alta"] = dates.loc[median_date,"fecha_alta"]
 
+    # indrel
+    print df['indrel'].unique()
     df.loc[df.indrel.isnull(),"indrel"] = 1
+    df["indrel"] = df["indrel"].astype(int)
 
-    df.drop(["tipodom","cod_prov"],axis=1,inplace=True)
+    # ind_actividad_cliente
+    df.loc[df.ind_actividad_cliente.isnull(),"ind_actividad_cliente"] = df["ind_actividad_cliente"].min()
+    df['ind_actividad_cliente'] = df['ind_actividad_cliente'].astype(np.int8)
 
-    df.loc[df.ind_actividad_cliente.isnull(),"ind_actividad_cliente"] = \
-        df["ind_actividad_cliente"].median()
-
+    # nomprovince
     df.loc[df.nomprov=="CORU\xc3\x91A, A","nomprov"] = "CORUNA, A"
     df.loc[df.nomprov.isnull(),"nomprov"] = "UNKNOWN"
 
+    # income
     incomes = df.loc[df.renta.notnull(),:].groupby("nomprov").agg({"renta":{"MedianIncome":np.median}})
     incomes.sort_values(by=("renta","MedianIncome"),inplace=True)
     incomes.reset_index(inplace=True)
@@ -58,7 +154,6 @@ for item in mouth_list:
 
     df.loc[df.ind_nomina_ult1.isnull(), "ind_nomina_ult1"] = 0
     df.loc[df.ind_nom_pens_ult1.isnull(), "ind_nom_pens_ult1"] = 0
-    df.loc[df.conyuemp.isnull(), "conyuemp"] = 0
 
     string_data = df.select_dtypes(include=["object"])
     missing_columns = [col for col in string_data if string_data[col].isnull().any()]
@@ -66,35 +161,9 @@ for item in mouth_list:
         print("Unique values for {0}:\n{1}\n".format(col,string_data[col].unique()))
     del string_data
 
-    df.loc[df.indfall.isnull(),"indfall"] = "N"
-    df.loc[df.tiprel_1mes.isnull(),"tiprel_1mes"] = "A"
-    df.tiprel_1mes = df.tiprel_1mes.astype("category")
-
-    # As suggested by @StephenSmith
-    map_dict = { 1.0  : "1",
-                 "1.0" : "1",
-                 "1"   : "1",
-                 "3.0" : "3",
-                 "P"   : "P",
-                 3.0   : "3",
-                 2.0   : "2",
-                 "3"   : "3",
-                 "2.0" : "2",
-                 "4.0" : "4",
-                 "4"   : "4",
-                 "2"   : "2"}
-
-    df.indrel_1mes.fillna("P",inplace=True)
-    df.indrel_1mes = df.indrel_1mes.apply(lambda x: map_dict.get(x,x))
-    df.indrel_1mes = df.indrel_1mes.astype("category")
-
-    unknown_cols = [col for col in missing_columns if col not in ["indfall","tiprel_1mes","indrel_1mes"]]
-    for col in unknown_cols:
-        df.loc[df[col].isnull(),col] = "UNKNOWN"
-
     feature_cols = df.iloc[:1,].filter(regex="ind_+.*ult.*").columns.values
     for col in feature_cols:
-        df[col] = df[col].astype(int)
+        df[col] = df[col].astype(np.int8)
     del df['index']
 
     df["year"] = pd.DatetimeIndex(df["fecha_dato"]).year
@@ -102,11 +171,7 @@ for item in mouth_list:
     df["year_fecha"] = pd.DatetimeIndex(df["fecha_alta"]).year
     df["mouth_fecha"] = pd.DatetimeIndex(df["fecha_alta"]).month
     df['fecha_diff'] = (df["year"] - df["year_fecha"]) * 12 + df["mouth"] - df["mouth_fecha"]
-
-    del df['fecha_dato']
-    del df['fecha_alta']
-    del df['year']
-    del df['year_fecha']
-    del df['ult_fec_cli_1t']
+    df.drop(['fecha_dato','fecha_alta','year','year_fecha'],axis=1,inplace=True)
+    df.drop(['pais_residencia','canal_entrada','nomprov'],axis=1,inplace=True)
 
     df.to_csv('dataset/'+item+'_treated.csv',index=False)
