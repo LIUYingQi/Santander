@@ -7,6 +7,11 @@ mouth_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28','
               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
               ,'2016-03-28','2016-04-28','2016-05-28']
 
+# ind_ahor_fin_ult1,ind_aval_fin_ult1,ind_cco_fin_ult1,ind_cder_fin_ult1,ind_cno_fin_ult1,ind_ctju_fin_ult1,
+# ind_ctma_fin_ult1,ind_ctop_fin_ult1,ind_ctpp_fin_ult1,ind_deco_fin_ult1,ind_deme_fin_ult1,ind_dela_fin_ult1,
+# ind_ecue_fin_ult1,ind_fond_fin_ult1,ind_hip_fin_ult1,ind_plan_fin_ult1,ind_pres_fin_ult1,ind_reca_fin_ult1,
+# ind_tjcr_fin_ult1,ind_valo_fin_ult1,ind_viv_fin_ult1,ind_nomina_ult1,ind_nom_pens_ult1,ind_recibo_ult1
+
 for item in mouth_list:
     print item
     df = pd.read_csv('dataset/'+item+".csv",dtype={"sexo":str,"ind_nuevo":str,"ult_fec_cli_1t":str,
