@@ -202,8 +202,8 @@ da["age"] = da["age"].astype(int)
 da.loc[da["ind_nuevo"].isnull(),"ind_nuevo"] = 1
 
 # antiguedad
-da.loc[da.antiguedad=='     NA',"antiguedad"] = '      0'
-da.loc[da.antiguedad=='-999999', "antiguedad"] = '      0'
+da.loc[da.antiguedad=='     NA',"antiguedad"] = '0'
+da.loc[da.antiguedad=='-999999', "antiguedad"] = '0'
 da["antiguedad"] = da["antiguedad"].astype(int)
 
 print da
@@ -267,6 +267,22 @@ da["year_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).year
 da["mouth_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).month
 da['fecha_diff'] = (da["year"] - da["year_fecha"]) * 12 + da["mouth"] - da["mouth_fecha"]
 da.drop(['fecha_dato','fecha_alta','year','year_fecha'],axis=1,inplace=True)
+
+canal_entrada_label = ['KHE','KAT','KFC','KFA','KHK','KHQ','KHD','KAS','RED','KAG','KAY','KAA','KAB','KHM','KHN']
+for item in canal_entrada_label:
+    da[item] = pd.Series(np.zeros(count, dtype=np.int8))
+    da.loc[da['canal_entrada'] == item, item] = 1
+
+nomprov_label = ['ALAVA','MADRID','MALAGA','MURCIA','NAVARRA','OURENSE','MELILLA','VALENCIA','UNKNOWN','TOLEDO',
+                 'TERUEL','ZARAGOZA','ZAMORA','VALLADOLID','PONTEVEDRA','RIOJA, LA','SALAMANCA','PALMAS, LAS',
+                 'PALENCIA','SEVILLA','TARRAGONA','SORIA','SEGOVIA','SANTA CRUZ DE TENERIFE','BARCELONA',
+                 'BIZKAIA','BURGOS','CANTABRIA','CASTELLON','CADIZ','CIUDAD REAL','CORDOBA','CEUTA','CACERES',
+                 'ASTURIAS','ALMERIA','ALICANTE','AVILA','BADAJOZ','ALBACETE','BALEARS, ILLES','CORUNA, A','CUENCA','GIRONA',
+                 'GRANADA','GIPUZKOA','LUGO','LERIDA','LEON','GUADALAJARA','HUELVA','JAEN','HUESCA']
+for item in nomprov_label:
+    da[item] = pd.Series(np.zeros(count, dtype=np.int8))
+    da.loc[da['nomprov'] == item, item] = 1
+
 da.drop(['pais_residencia','canal_entrada','nomprov'],axis=1,inplace=True)
 
 print da
