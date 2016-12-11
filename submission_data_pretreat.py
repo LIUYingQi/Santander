@@ -285,6 +285,6 @@ for item in nomprov_label:
 
 da.drop(['pais_residencia','canal_entrada','nomprov'],axis=1,inplace=True)
 
-print da
+print da.shape
 
 da.to_csv('testset.csv',index=False)

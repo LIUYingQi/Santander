@@ -3,31 +3,36 @@ import numpy as np
 import pandas as pd
 import heapq
 
+#ncodpers,ind_ahor_fin_ult1,ind_aval_fin_ult1,ind_cco_fin_ult1,ind_cder_fin_ult1,
+# ind_cno_fin_ult1,ind_ctju_fin_ult1,ind_ctma_fin_ult1,ind_ctop_fin_ult1,ind_ctpp_fin_ult1,
+# ind_deco_fin_ult1,ind_deme_fin_ult1,ind_dela_fin_ult1,ind_ecue_fin_ult1,ind_fond_fin_ult1,
+# ind_hip_fin_ult1,ind_plan_fin_ult1,ind_pres_fin_ult1,ind_reca_fin_ult1,ind_tjcr_fin_ult1,
+# ind_valo_fin_ult1,ind_viv_fin_ult1,ind_nomina_ult1,ind_nom_pens_ult1,ind_recibo_ult1
 
 #######################################################################################################################
 ##### hey  fuckkkkkkkkkkkkkk   change   allllllllllllll    hereeeeeeeeeeeeeeeeeeee
 
 exist_pro = pd.read_csv('dataset/2016-05-28_treated.csv',engine='c')
 
-label = ['ncodpers','ind_cco_fin_ult1','ind_cno_fin_ult1',
-         'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1',
-         'ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_plan_fin_ult1',
-         'ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
-         'ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
+label = ['ncodpers','ind_cco_fin_ult1','ind_cder_fin_ult1','ind_cno_fin_ult1',
+         'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1','ind_deco_fin_ult1',
+         'ind_deme_fin_ult1','ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1',
+         'ind_plan_fin_ult1','ind_pres_fin_ult1','ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
+         'ind_viv_fin_ult1','ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
 
-label_index = ['ind_cco_fin_ult1','ind_cno_fin_ult1',
-         'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1',
-         'ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_plan_fin_ult1',
-         'ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
-         'ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
+label_index = ['ind_cco_fin_ult1','ind_cder_fin_ult1','ind_cno_fin_ult1',
+         'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1','ind_deco_fin_ult1',
+         'ind_deme_fin_ult1','ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1',
+         'ind_plan_fin_ult1','ind_pres_fin_ult1','ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
+         'ind_viv_fin_ult1','ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
 
-label_add = ['ind_cco_fin_ult1 ','ind_cno_fin_ult1 ',
-         'ind_ctju_fin_ult1 ','ind_ctma_fin_ult1 ','ind_ctop_fin_ult1 ','ind_ctpp_fin_ult1 ',
-         'ind_dela_fin_ult1 ','ind_ecue_fin_ult1 ','ind_fond_fin_ult1 ','ind_plan_fin_ult1 ',
-         'ind_reca_fin_ult1 ','ind_tjcr_fin_ult1 ','ind_valo_fin_ult1 ',
-         'ind_nomina_ult1 ','ind_nom_pens_ult1 ','ind_recibo_ult1 ']
+label_add = ['ind_cco_fin_ult1 ','ind_cder_fin_ult1 ','ind_cno_fin_ult1 ',
+         'ind_ctju_fin_ult1 ','ind_ctma_fin_ult1 ','ind_ctop_fin_ult1 ','ind_ctpp_fin_ult1 ','ind_deco_fin_ult1 ',
+         'ind_deme_fin_ult1 ','ind_dela_fin_ult1 ','ind_ecue_fin_ult1 ','ind_fond_fin_ult1 ','ind_hip_fin_ult1 ',
+         'ind_plan_fin_ult1 ','ind_pres_fin_ult1 ','ind_reca_fin_ult1 ','ind_tjcr_fin_ult1 ','ind_valo_fin_ult1 ',
+         'ind_viv_fin_ult1 ','ind_nomina_ult1 ','ind_nom_pens_ult1 ','ind_recibo_ult1 ']
 
-int_label = [3,5,6,7,8,9,12,13,14,16,18,19,20,22,23,24]
+int_label = [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 # int_label = [3,4]
 ######################################################################################################################
 
