@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 mouth_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28','2015-06-28','2015-07-28'
               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
@@ -42,36 +41,25 @@ for mouth_item in mouth_list:
     # ind_empleado
     df['ind_empleado_N']=pd.Series(np.zeros(count,dtype=np.int8))
     df['ind_empleado_A']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['ind_empleado_S']=pd.Series(np.zeros(count,dtype=np.int8))
     df['ind_empleado_F']=pd.Series(np.zeros(count,dtype=np.int8))
     df['ind_empleado_B']=pd.Series(np.zeros(count,dtype=np.int8))
     df.loc[df['ind_empleado']=='N','ind_empleado_N'] = 1
     df.loc[df['ind_empleado']=='A','ind_empleado_A'] = 1
-    df.loc[df['ind_empleado']=='S','ind_empleado_S'] = 1
     df.loc[df['ind_empleado']=='F','ind_empleado_F'] = 1
     df.loc[df['ind_empleado']=='B','ind_empleado_B'] = 1
     df.drop('ind_empleado',axis=1,inplace=True)
 
     # indrel_1mes
-    df['indrel_1mes_1']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['indrel_1mes_2']=pd.Series(np.zeros(count,dtype=np.int8))
+
     df['indrel_1mes_3']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['indrel_1mes_4']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['indrel_1mes_p']=pd.Series(np.zeros(count,dtype=np.int8))
-    df.loc[df['indrel_1mes']=='1','indrel_1mes_1'] = 1
-    df.loc[df['indrel_1mes']=='2','indrel_1mes_2'] = 1
     df.loc[df['indrel_1mes']=='3','indrel_1mes_3'] = 1
-    df.loc[df['indrel_1mes']=='4','indrel_1mes_4'] = 1
-    df.loc[df['indrel_1mes']=='p','indrel_1mes_p'] = 1
     df.drop('indrel_1mes',axis=1,inplace=True)
 
     # tiprel_1mes
     df['tiprel_1mes_A']=pd.Series(np.zeros(count,dtype=np.int8))
     df['tiprel_1mes_I']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['tiprel_1mes_P']=pd.Series(np.zeros(count,dtype=np.int8))
     df.loc[df['tiprel_1mes']=='A','tiprel_1mes_A'] = 1
     df.loc[df['tiprel_1mes']=='I','tiprel_1mes_I'] = 1
-    df.loc[df['tiprel_1mes']=='P','tiprel_1mes_P'] = 1
     df.drop('tiprel_1mes',axis=1,inplace=True)
 
     # segmento
@@ -85,22 +73,16 @@ for mouth_item in mouth_list:
 
     # indresi
     df['indresi_N']=pd.Series(np.zeros(count,dtype=np.int8))
-    df['indresi_S']=pd.Series(np.zeros(count,dtype=np.int8))
     df.loc[df['indresi']=='N','indresi_N'] = 1
-    df.loc[df['indresi']=='S','indresi_S'] = 1
     df.drop('indresi',axis=1,inplace=True)
 
     # indext
-    df['indext_N']=pd.Series(np.zeros(count,dtype=np.int8))
     df['indext_S']=pd.Series(np.zeros(count,dtype=np.int8))
-    df.loc[df['indext']=='N','indext_N'] = 1
     df.loc[df['indext']=='S','indext_S'] = 1
     df.drop('indext',axis=1,inplace=True)
 
     # indext
-    df['indfall_N']=pd.Series(np.zeros(count,dtype=np.int8))
     df['indfall_S']=pd.Series(np.zeros(count,dtype=np.int8))
-    df.loc[df['indfall']=='N','indfall_N'] = 1
     df.loc[df['indfall']=='S','indfall_S'] = 1
     df.drop('indfall',axis=1,inplace=True)
 
@@ -117,7 +99,7 @@ for mouth_item in mouth_list:
     df["age"] = df["age"].astype(np.int8)
 
     # ind_neuvo
-    df.loc[df["ind_nuevo"].isnull(),"ind_nuevo"] = 1
+    df.loc[df["ind_nuevo"].isnull(),"ind_nuevo"] = 0
     df["ind_nuevo"] = df["ind_nuevo"].astype(np.int8)
 
     # antiguedad
@@ -133,7 +115,10 @@ for mouth_item in mouth_list:
     # indrel
     print df['indrel'].unique()
     df.loc[df.indrel.isnull(),"indrel"] = 1
+    df['indrel_change']=pd.Series(np.zeros(count,dtype=np.int8))
+    df.loc[df['indrel']==99,'indrel_change'] = 1
     df["indrel"] = df["indrel"].astype(np.int8)
+    df.drop('indrel',axis=1,inplace=True)
 
     # ind_actividad_cliente
     df.loc[df.ind_actividad_cliente.isnull(),"ind_actividad_cliente"] = df["ind_actividad_cliente"].min()
@@ -183,7 +168,10 @@ for mouth_item in mouth_list:
 
     print df.shape
 
-    canal_entrada_label = ['KHE','KAT','KFC','KFA','KHK','KHQ','KHD','KAS','RED','KAG','KAY','KAA','KAB','KHM','KHN']
+    canal_entrada_label = ['KHE', 'KAT', 'KFC', 'KFA', 'KHK', 'KHD', 'KAS', 'KAG', 'RED',
+                           'KAA', 'KAY', 'KAB', 'KHN', 'KHL', 'KCC', 'KAE', 'KBZ', 'KFD',
+                           'KHM', 'KAI', 'KEY', 'KAW', 'KAF', 'KAR', '013', 'KAZ', 'KAH',
+                           'KCI', 'KCH', 'KAJ']
     for item in canal_entrada_label:
         df[item] = pd.Series(np.zeros(count, dtype=np.int8))
         df.loc[df['canal_entrada'] == item, item] = 1

@@ -124,36 +124,24 @@ da.drop('sexo',axis=1,inplace=True)
 # ind_empleado
 da['ind_empleado_N']=pd.Series(np.zeros(count,dtype=np.int8))
 da['ind_empleado_A']=pd.Series(np.zeros(count,dtype=np.int8))
-da['ind_empleado_S']=pd.Series(np.zeros(count,dtype=np.int8))
 da['ind_empleado_F']=pd.Series(np.zeros(count,dtype=np.int8))
 da['ind_empleado_B']=pd.Series(np.zeros(count,dtype=np.int8))
 da.loc[da['ind_empleado']=='N','ind_empleado_N'] = 1
 da.loc[da['ind_empleado']=='A','ind_empleado_A'] = 1
-da.loc[da['ind_empleado']=='S','ind_empleado_S'] = 1
 da.loc[da['ind_empleado']=='F','ind_empleado_F'] = 1
 da.loc[da['ind_empleado']=='B','ind_empleado_B'] = 1
 da.drop('ind_empleado',axis=1,inplace=True)
 
 # indrel_1mes
-da['indrel_1mes_1']=pd.Series(np.zeros(count,dtype=np.int8))
-da['indrel_1mes_2']=pd.Series(np.zeros(count,dtype=np.int8))
 da['indrel_1mes_3']=pd.Series(np.zeros(count,dtype=np.int8))
-da['indrel_1mes_4']=pd.Series(np.zeros(count,dtype=np.int8))
-da['indrel_1mes_p']=pd.Series(np.zeros(count,dtype=np.int8))
-da.loc[da['indrel_1mes']=='1','indrel_1mes_1'] = 1
-da.loc[da['indrel_1mes']=='2','indrel_1mes_2'] = 1
 da.loc[da['indrel_1mes']=='3','indrel_1mes_3'] = 1
-da.loc[da['indrel_1mes']=='4','indrel_1mes_4'] = 1
-da.loc[da['indrel_1mes']=='p','indrel_1mes_p'] = 1
 da.drop('indrel_1mes',axis=1,inplace=True)
 
 # tiprel_1mes
 da['tiprel_1mes_A']=pd.Series(np.zeros(count,dtype=np.int8))
 da['tiprel_1mes_I']=pd.Series(np.zeros(count,dtype=np.int8))
-da['tiprel_1mes_P']=pd.Series(np.zeros(count,dtype=np.int8))
 da.loc[da['tiprel_1mes']=='A','tiprel_1mes_A'] = 1
 da.loc[da['tiprel_1mes']=='I','tiprel_1mes_I'] = 1
-da.loc[da['tiprel_1mes']=='P','tiprel_1mes_P'] = 1
 da.drop('tiprel_1mes',axis=1,inplace=True)
 
 # segmento
@@ -167,22 +155,16 @@ da.drop('segmento',axis=1,inplace=True)
 
 # indresi
 da['indresi_N']=pd.Series(np.zeros(count,dtype=np.int8))
-da['indresi_S']=pd.Series(np.zeros(count,dtype=np.int8))
 da.loc[da['indresi']=='N','indresi_N'] = 1
-da.loc[da['indresi']=='S','indresi_S'] = 1
 da.drop('indresi',axis=1,inplace=True)
 
 # indext
-da['indext_N']=pd.Series(np.zeros(count,dtype=np.int8))
 da['indext_S']=pd.Series(np.zeros(count,dtype=np.int8))
-da.loc[da['indext']=='N','indext_N'] = 1
 da.loc[da['indext']=='S','indext_S'] = 1
 da.drop('indext',axis=1,inplace=True)
 
 # indext
-da['indfall_N']=pd.Series(np.zeros(count,dtype=np.int8))
 da['indfall_S']=pd.Series(np.zeros(count,dtype=np.int8))
-da.loc[da['indfall']=='N','indfall_N'] = 1
 da.loc[da['indfall']=='S','indfall_S'] = 1
 da.drop('indfall',axis=1,inplace=True)
 
@@ -199,7 +181,7 @@ da["age"].fillna(da["age"].mean(),inplace=True)
 da["age"] = da["age"].astype(int)
 
 # ind_neuvo
-da.loc[da["ind_nuevo"].isnull(),"ind_nuevo"] = 1
+da.loc[da["ind_nuevo"].isnull(),"ind_nuevo"] = 0
 
 # antiguedad
 da.loc[da.antiguedad=='     NA',"antiguedad"] = '0'
@@ -219,7 +201,9 @@ print da
 # indrel
 print da['indrel'].unique()
 da.loc[da.indrel.isnull(),"indrel"] = 1
-da["indrel"] = da["indrel"].astype(int)
+da['indrel_change'] = pd.Series(np.zeros(count, dtype=np.int8))
+da.loc[da['indrel'] == 99, 'indrel_change'] = 1
+da.drop('indrel', axis=1, inplace=True)
 
 # ind_actividad_cliente
 da.loc[da.ind_actividad_cliente.isnull(),"ind_actividad_cliente"] = da["ind_actividad_cliente"].min()
@@ -268,7 +252,10 @@ da["mouth_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).month
 da['fecha_diff'] = (da["year"] - da["year_fecha"]) * 12 + da["mouth"] - da["mouth_fecha"]
 da.drop(['fecha_dato','fecha_alta','year','year_fecha'],axis=1,inplace=True)
 
-canal_entrada_label = ['KHE','KAT','KFC','KFA','KHK','KHQ','KHD','KAS','RED','KAG','KAY','KAA','KAB','KHM','KHN']
+canal_entrada_label = ['KHE', 'KAT', 'KFC', 'KFA', 'KHK', 'KHD', 'KAS', 'KAG', 'RED',
+                       'KAA', 'KAY', 'KAB', 'KHN', 'KHL', 'KCC', 'KAE', 'KBZ', 'KFD',
+                       'KHM', 'KAI', 'KEY', 'KAW', 'KAF', 'KAR', '013', 'KAZ', 'KAH',
+                       'KCI', 'KCH', 'KAJ']
 for item in canal_entrada_label:
     da[item] = pd.Series(np.zeros(count, dtype=np.int8))
     da.loc[da['canal_entrada'] == item, item] = 1

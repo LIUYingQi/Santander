@@ -2,7 +2,7 @@ import xgboost as xgb
 import pandas as pd
 import numpy as np
 import cPickle as pickle
-
+#
 # label_index = ['ind_cco_fin_ult1','ind_cder_fin_ult1','ind_cno_fin_ult1',
 #          'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1','ind_deco_fin_ult1',
 #          'ind_deme_fin_ult1','ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1',
@@ -85,9 +85,9 @@ def runXGB(trainset, label, seed_val=0):
     param['eval_metric'] = "mlogloss"
     param['min_child_weight'] = 1
     param['subsample'] = 0.7
-    param['colsample_bytree'] = 0.95
+    param['colsample_bytree'] = 1
     param['seed'] = seed_val
-    num_rounds = 100
+    num_rounds = 200
 
     plst = list(param.items())
     xgtrain = xgb.DMatrix(trainset, label=label)

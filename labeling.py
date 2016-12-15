@@ -61,6 +61,7 @@ for item in mouth_itr_list:
     df = df_grouped.last()>df_grouped.first()
     df = df[0:row_num]
     df.to_csv(item+'_label.csv',sep=',')
+
     # df_change = pd.DataFrame(df.loc[df['ncodpers'].isin(df_next['ncodpers'])])
     # print 'unique df_next in df  ' + str(len(df_change['ncodpers'].unique()))
     #
