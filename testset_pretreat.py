@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import cPickle as pickle
 data_path = "input/"
 
 # input
@@ -238,16 +238,28 @@ da["mouth_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).month
 da['fecha_diff'] = (da["year"] - da["year_fecha"]) * 12 + da["mouth"] - da["mouth_fecha"]
 da.drop(['fecha_dato','fecha_alta','year'],axis=1,inplace=True)
 
-canal_entrada_label = ['KHE', 'KAT', 'KFC', 'KFA', 'KHK', 'KHD', 'KAS', 'KAG', 'RED',
-                       'KAA', 'KAY', 'KAB', 'KHN', 'KHL', 'KCC', 'KAE', 'KBZ', 'KFD',
-                       'KHM', 'KAI', 'KEY', 'KAW', 'KAF', 'KAR', '013', 'KAZ', 'KAH',
-                       'KCI', 'KCH', 'KAJ']
-for item in canal_entrada_label:
-    da[item] = pd.Series(np.zeros(count, dtype=np.int8))
-    da.loc[da['canal_entrada'] == item, item] = 1
-
 da['num_product'] = pd.Series(np.zeros(count, dtype=np.int8))
 da.loc[:, 'num_product'] = np.sum(da.loc[:, labelset], axis=1).astype(np.int8)
+
+# merge canal info
+f = open('dataset/canal_entrada.pkl','rb')
+canal_entada_info = pickle.load(f)
+f.close()
+
+da = pd.merge(da,canal_entada_info,how='left',on='canal_entrada')
+
+# merge canal info
+f = open('dataset/nomprov.pkl','rb')
+nomprov_info = pickle.load(f)
+f.close()
+
+da = pd.merge(da,nomprov_info,how='left',on='nomprov')
+
+# drop useless
+da.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
+
+# fill nan (maybe have some)
+da.fillna(value=0)
 
 da.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
 

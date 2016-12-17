@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import cPickle as pickle
 
 mouth_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28','2015-06-28','2015-07-28'
               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
@@ -168,15 +169,6 @@ for mouth_item in mouth_list:
     df['fecha_diff'] = (df["year"] - df["year_fecha"]) * 12 + df["mouth"] - df["mouth_fecha"]
     df.drop(['fecha_dato','fecha_alta','year'],axis=1,inplace=True)
 
-    # canal_entrada
-    canal_entrada_label = ['KHE', 'KAT', 'KFC', 'KFA', 'KHK', 'KHD', 'KAS', 'KAG', 'RED',
-                           'KAA', 'KAY', 'KAB', 'KHN', 'KHL', 'KCC', 'KAE', 'KBZ', 'KFD',
-                           'KHM', 'KAI', 'KEY', 'KAW', 'KAF', 'KAR', '013', 'KAZ', 'KAH',
-                           'KCI', 'KCH', 'KAJ']
-    for item in canal_entrada_label:
-        df[item] = pd.Series(np.zeros(count, dtype=np.int8))
-        df.loc[df['canal_entrada'] == item, item] = 1
-
     # num_product
     labelset = ['ind_ahor_fin_ult1', 'ind_aval_fin_ult1', 'ind_cco_fin_ult1', 'ind_cder_fin_ult1',
                 'ind_cno_fin_ult1', 'ind_ctju_fin_ult1', 'ind_ctma_fin_ult1', 'ind_ctop_fin_ult1', 'ind_ctpp_fin_ult1',
@@ -185,14 +177,28 @@ for mouth_item in mouth_list:
                 'ind_valo_fin_ult1', 'ind_viv_fin_ult1', 'ind_nomina_ult1', 'ind_nom_pens_ult1', 'ind_recibo_ult1']
     df['num_product'] = pd.Series(np.zeros(count, dtype=np.int8))
     df.loc[:,'num_product'] = np.sum(df.loc[:,labelset],axis=1).astype(np.int8)
-    print df.shape
+
+    # merge canal info
+    f = open('dataset/canal_entrada.pkl','rb')
+    canal_entada_info = pickle.load(f)
+    f.close()
+
+    df = pd.merge(df,canal_entada_info,how='left',on='canal_entrada')
+
+    # merge canal info
+    f = open('dataset/nomprov.pkl','rb')
+    nomprov_info = pickle.load(f)
+    f.close()
+
+    df = pd.merge(df,nomprov_info,how='left',on='nomprov')
 
     # drop useless
     df.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
-    print df.iloc[1:20].dtypes
-    print df.iloc[21:40].dtypes
-    print df.iloc[41:60].dtypes
-    print df.iloc[61:].dtypes
+
+    # fill nan (maybe have some)
+    df.fillna(value=0)
+
+    # final shape
     print df.shape
 
     # save
