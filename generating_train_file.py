@@ -19,6 +19,8 @@ lables = ['ind_ahor_fin_ult1','ind_aval_fin_ult1','ind_cco_fin_ult1','ind_cder_f
 mouth_list = ['2015-05-28']
 
 mouth = '2015-05-28'
+
+data_path = "input/"
 trainset = pd.read_csv('dataset/'+mouth+'_treated.csv',engine='c')
 label = pd.read_csv('dataset/'+mouth+'_label.csv',engine='c')
 print label.shape
@@ -101,5 +103,5 @@ print label.shape
 print general_label.shape
 print general_trainset.shape
 
-general_trainset.to_csv('trainset.csv',index=False)
-general_label.to_csv('label.csv',index=False)
+general_trainset.to_csv(data_path+'trainset.csv',index=False)
+general_label.to_csv(data_path+'label.csv',index=False)
