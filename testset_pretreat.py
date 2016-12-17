@@ -27,9 +27,8 @@ print df.shape
 ###   add  exist   product
 ########################################################################
 
+print 'add exist product '
 df_next = pd.read_csv('dataset/2016-05-28.csv',engine='c')
-print 'unique df_next   ' + str(len(df_next['ncodpers'].unique()))
-print df_next.shape
 
 # add exist product labels
 labelset = ['ind_ahor_fin_ult1', 'ind_aval_fin_ult1', 'ind_cco_fin_ult1', 'ind_cder_fin_ult1',
@@ -52,9 +51,6 @@ df_next = df_next[['ncodpers', 'ind_ahor_fin_ult1', 'ind_aval_fin_ult1', 'ind_cc
                    'ind_hip_fin_ult1', 'ind_plan_fin_ult1', 'ind_pres_fin_ult1', 'ind_reca_fin_ult1', 'ind_tjcr_fin_ult1',
                    'ind_valo_fin_ult1', 'ind_viv_fin_ult1', 'ind_nomina_ult1', 'ind_nom_pens_ult1', 'ind_recibo_ult1']]
 
-print df.shape
-print df_next.shape
-
 #  use >  to add label of exist product label
 df_change = pd.DataFrame(df.loc[df['ncodpers'].isin(df_next['ncodpers'])])
 df_first_not_in_next = pd.DataFrame(df.loc[~df['ncodpers'].isin(df_next['ncodpers'])])
@@ -64,10 +60,6 @@ df_grouped = df_conct.groupby('ncodpers', sort=False)
 df = df_grouped.last() > df_grouped.first()
 df_add = df[0:count]
 print df_add.shape
-
-#######################################################################
-###   pretreat   test_ver2   file  information
-#######################################################################
 
 da = pd.read_csv(data_path+'test_ver2.csv',
                  dtype={"sexo":str,
@@ -93,10 +85,14 @@ for item in ['ind_ahor_fin_ult1', 'ind_aval_fin_ult1', 'ind_cco_fin_ult1', 'ind_
 
 del df,df_add
 del df_next,df_change,df_conct,df_grouped,df_first_not_in_next,df_next_not_in_first
+print da.shape
+
 
 #################################################################################################
 ###  total  data  cleaning
 #################################################################################################
+
+print 'data  cleaning     '
 
 # drop useless data
 da.drop(['ult_fec_cli_1t',"tipodom","cod_prov"],axis=1,inplace=True)
@@ -186,7 +182,6 @@ median_date = int(np.median(dates.index.values))
 da.loc[da.fecha_alta.isnull(),"fecha_alta"] = dates.loc[median_date,"fecha_alta"]
 
 # indrel
-print da['indrel'].unique()
 da.loc[da.indrel.isnull(),"indrel"] = 1
 da['indrel_change'] = pd.Series(np.zeros(count, dtype=np.int8))
 da.loc[da['indrel'] == 99, 'indrel_change'] = 1
@@ -220,7 +215,10 @@ da.loc[da.renta.isnull(),"renta"] = new_incomes.loc[da.renta.isnull(),"renta"].r
 da.loc[da.renta.isnull(),"renta"] = da.loc[da.renta.notnull(),"renta"].median()
 
 da.sort_values(by="fecha_dato",inplace=True)
+print da.shape
 
+
+print '********************************************'
 
 string_data = da.select_dtypes(include=["object"])
 missing_columns = [col for col in string_data if string_data[col].isnull().any()]
