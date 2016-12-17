@@ -21,6 +21,7 @@ df = pd.read_csv(data_path+'test_ver2.csv',
 
 # total rows
 count = len(df['ncodpers'].unique())
+print df
 print df.shape
 
 ########################################################################
@@ -215,20 +216,10 @@ da.loc[da.renta.isnull(),"renta"] = new_incomes.loc[da.renta.isnull(),"renta"].r
 da.loc[da.renta.isnull(),"renta"] = da.loc[da.renta.notnull(),"renta"].median()
 
 da.sort_values(by="fecha_dato",inplace=True)
-print da.shape
-
-
-print '********************************************'
-
-string_data = da.select_dtypes(include=["object"])
-missing_columns = [col for col in string_data if string_data[col].isnull().any()]
-for col in missing_columns:
-    print("Unique values for {0}:\n{1}\n".format(col,string_data[col].unique()))
-del string_data
 da.sort_values(by="index",inplace=True)
-
 del da['index']
 
+# time
 da["year"] = pd.DatetimeIndex(da["fecha_dato"]).year
 da["mouth"] = pd.DatetimeIndex(da["fecha_dato"]).month
 da["year_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).year
@@ -236,6 +227,7 @@ da["mouth_fecha"] = pd.DatetimeIndex(da["fecha_alta"]).month
 da['fecha_diff'] = (da["year"] - da["year_fecha"]) * 12 + da["mouth"] - da["mouth_fecha"]
 da.drop(['fecha_dato','fecha_alta','year'],axis=1,inplace=True)
 
+# num product
 da['num_product'] = pd.Series(np.zeros(count, dtype=np.int8))
 da.loc[:, 'num_product'] = np.sum(da.loc[:, labelset], axis=1).astype(np.int8)
 
@@ -258,8 +250,6 @@ da.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
 
 # fill nan (maybe have some)
 da.fillna(value=0)
-
-da.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
 
 print da.shape
 
