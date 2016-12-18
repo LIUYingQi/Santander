@@ -7,32 +7,8 @@ data_path = "input/"
 
 ##################################################################################################################
 ##############      generate Dmatrix
-##################################################################################################################
+#################################################################################################################
 
-# label_index = ['ind_cco_fin_ult1','ind_cder_fin_ult1','ind_cno_fin_ult1',
-#          'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1','ind_deco_fin_ult1',
-#          'ind_deme_fin_ult1','ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1',
-#          'ind_plan_fin_ult1','ind_pres_fin_ult1','ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
-#          'ind_viv_fin_ult1','ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
-#
-# title = ['ncodpers','ind_ahor_fin_ult1','ind_aval_fin_ult1','ind_cco_fin_ult1','ind_cder_fin_ult1','ind_cno_fin_ult1',
-#          'ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1','ind_ctpp_fin_ult1','ind_deco_fin_ult1',
-#          'ind_deme_fin_ult1','ind_dela_fin_ult1','ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1',
-#          'ind_plan_fin_ult1','ind_pres_fin_ult1','ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
-#          'ind_viv_fin_ult1','ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
-#
-# label_add = ['ind_cco_fin_ult1 ','ind_cder_fin_ult1 ','ind_cno_fin_ult1 ',
-#          'ind_ctju_fin_ult1 ','ind_ctma_fin_ult1 ','ind_ctop_fin_ult1 ','ind_ctpp_fin_ult1 ','ind_deco_fin_ult1 ',
-#          'ind_deme_fin_ult1 ','ind_dela_fin_ult1 ','ind_ecue_fin_ult1 ','ind_fond_fin_ult1 ','ind_hip_fin_ult1 ',
-#          'ind_plan_fin_ult1 ','ind_pres_fin_ult1 ','ind_reca_fin_ult1 ','ind_tjcr_fin_ult1 ','ind_valo_fin_ult1 ',
-#          'ind_viv_fin_ult1 ','ind_nomina_ult1 ','ind_nom_pens_ult1 ','ind_recibo_ult1 ']
-#
-# index = []
-# for item in label_index:
-#     index.append(title.index(item))
-#
-# print index
-#
 # data_path = "input/"
 # train_x = pd.read_csv(data_path+'trainset.csv',engine='c').as_matrix()
 # train_y = pd.read_csv(data_path+'label.csv',engine='c').as_matrix()
@@ -65,10 +41,10 @@ data_path = "input/"
 # pickle.dump(trainset,f_trainset)
 # pickle.dump(label,f_label)
 # pickle.dump(test_X,f_test_x)
-
-##############################################################################################################
-######               train  model
-#############################################################################################################
+#
+# ##############################################################################################################
+# ######               train  model
+# #############################################################################################################
 
 # f_train_x = open(data_path+'trainset.pkl','rb')
 # f_train_y = open(data_path+'label.pkl','rb')
@@ -83,15 +59,15 @@ data_path = "input/"
 #     param = {}
 #     param['objective'] = 'multi:softprob'
 #     param['eta'] = 0.02
-#     param['max_depth'] = 20
+#     param['max_depth'] = 60
 #     param['silent'] = 0
 #     param['num_class'] = 22
 #     param['eval_metric'] = "mlogloss"
-#     param['min_child_weight'] = 1
-#     param['subsample'] = 1
+#     param['min_child_weight'] = 5
+#     param['subsample'] = 0.9
 #     param['colsample_bytree'] = 1
 #     param['seed'] = seed_val
-#     num_rounds = 3
+#     num_rounds = 300
 #
 #     plst = list(param.items())
 #     xgtrain = xgb.DMatrix(trainset, label=label)
