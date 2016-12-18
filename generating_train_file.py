@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import cPickle as pickle
+
+print 'loading from dataset and seleting useful label instance '
 
 lables = ['ind_ahor_fin_ult1','ind_aval_fin_ult1','ind_cco_fin_ult1','ind_cder_fin_ult1',
            'ind_cno_fin_ult1','ind_ctju_fin_ult1','ind_ctma_fin_ult1','ind_ctop_fin_ult1',
@@ -7,10 +10,6 @@ lables = ['ind_ahor_fin_ult1','ind_aval_fin_ult1','ind_cco_fin_ult1','ind_cder_f
            'ind_ecue_fin_ult1','ind_fond_fin_ult1','ind_hip_fin_ult1','ind_plan_fin_ult1',
            'ind_pres_fin_ult1','ind_reca_fin_ult1','ind_tjcr_fin_ult1','ind_valo_fin_ult1',
            'ind_viv_fin_ult1','ind_nomina_ult1','ind_nom_pens_ult1','ind_recibo_ult1']
-
-# mouth_list = ['2015-02-28','2015-03-28','2015-04-28','2015-05-28','2015-06-28','2015-07-28'
-#               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
-#               ,'2016-03-28','2016-04-28']
 
 # mouth_list = ['2015-02-28','2015-03-28','2015-04-28','2015-05-28','2015-06-28','2015-07-28'
 #               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
@@ -57,7 +56,8 @@ general_trainset = trainset[~trainset['ncodpers'].isin(rm_list)]
 
 print trainset.shape
 print label.shape
-#
+
+###########        if add  other  mouth
 # for mouth in mouth_list:
 #
 #     trainset = pd.read_csv('dataset/'+mouth+'_treated.csv',engine='c')
@@ -103,5 +103,38 @@ print label.shape
 print general_label.shape
 print general_trainset.shape
 
-general_trainset.to_csv(data_path+'trainset.csv',index=False)
-general_label.to_csv(data_path+'label.csv',index=False)
+######     handle multiclass label problem
+print 'multiclass label to one class label'
+
+data_path = "input/"
+train_x = general_trainset.values
+train_y = general_label.values
+train_x = train_x[:,1:]
+train_y = train_y[:,3:]
+
+print(train_x.shape, train_y.shape)
+
+test_X = pd.read_csv(data_path+'testset.csv',engine='c').as_matrix()
+test_X = test_X[:,1:]
+print test_X.shape
+
+trainset = np.empty((0,train_x.shape[1]),dtype=np.float32)
+label = np.empty((0),dtype=np.float32)
+
+for i in range(train_x.shape[0]):
+    count = -1
+    for item in train_y[i]:
+        count +=1
+        if item == True:
+            trainset = np.vstack((trainset,train_x[i]))
+            label = np.append(label,count)
+
+print trainset.shape
+print label.shape
+
+f_trainset = open(data_path+'trainset.pkl','wb')
+f_label = open(data_path+'label.pkl','wb')
+f_test_x = open(data_path+'test_x.pkl','wb')
+pickle.dump(trainset,f_trainset)
+pickle.dump(label,f_label)
+pickle.dump(test_X,f_test_x)
