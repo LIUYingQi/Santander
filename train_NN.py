@@ -68,7 +68,7 @@ output = tf.matmul(layer2, W) + B
 
 py_x = tf.nn.softmax(output)
 cost = -tf.reduce_sum(Y * tf.log(py_x + 1e-9))
-train_op = tf.train.RMSPropOptimizer(learning_rate=0.01).minimize(cost)
+train_op = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(cost)
 predict = tf.argmax(py_x , 1)
 
 # 'Saver' op to save and restore all the variables
@@ -87,7 +87,8 @@ with tf.Session() as sess:
         print '############################################################'
         print '                                                            '
 
-        sess.run(train_op,feed_dict={X:train_x,Y:train_y})
+        cost_item,_ = sess.run([cost,train_op],feed_dict={X:train_x,Y:train_y})
+        print cost_item
         predict_prob = sess.run(py_x,feed_dict={X:train_x})
         predict_label = sess.run(predict,feed_dict={X:train_x})
 

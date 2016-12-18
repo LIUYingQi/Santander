@@ -1,71 +1,50 @@
-import xgboost as xgb
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from xgboost.sklearn import XGBClassifier
 import cPickle as pickle
-import sklearn.preprocessing
 
-data_path = "input/"
+print 'loading data set'
 
-#
-# ##############################################################################################################
-# ######               train  model
-# #############################################################################################################
+data_path = 'input/'
+classifier = OneVsRestClassifier(XGBClassifier(max_depth=10,silent=False))
 
 f_train_x = open(data_path+'trainset.pkl','rb')
 f_train_y = open(data_path+'label.pkl','rb')
 
-stander = sklearn.preprocessing.StandardScaler()
+stander = StandardScaler()
 trainset = pickle.load(f_train_x)
 label = pickle.load(f_train_y)
+label = np.array(label,dtype=np.int8)
 
 trainset = stander.fit_transform(trainset)
 
 f_train_x.close()
 f_train_y.close()
 
-def runXGB(trainset, label, seed_val=0):
-    param = {}
-    param['objective'] = 'multi:softprob'
-    param['eta'] = 0.1
-    param['max_depth'] = 10
-    param['silent'] = 0
-    param['num_class'] = 22
-    param['eval_metric'] = "mlogloss"
-    param['min_child_weight'] = 1
-    param['subsample'] = 0.9
-    param['colsample_bytree'] = 1
-    param['seed'] = seed_val
-    num_rounds = 50
+print trainset.shape
+print label.shape
 
-    plst = list(param.items())
-    xgtrain = xgb.DMatrix(trainset, label=label)
-    model = xgb.train(plst, xgtrain, num_rounds)
-    return model
+print 'training ............'
+classifier.fit(trainset,label)
 
-print("Building model..")
-model = runXGB(trainset, label, seed_val=0)
-
-del trainset, label
-#
-print("Predicting..")
-
+print "Predicting............."
 f_test_x = open(data_path+'test_x.pkl','rb')
 test_X = pickle.load(f_test_x)
+
 test_X = stander.transform(test_X)
-xgtest = xgb.DMatrix(test_X)
-preds = model.predict(xgtest)
-del test_X, xgtest
+
+preds = classifier.predict_proba(test_X)
+del test_X
 
 result_file = open(data_path+'result.pkl','wb')
 pickle.dump(preds,result_file)
 print preds
-
 result_file.close()
 
-#####################################################################################################################
-####            predicting  and  add  exist product check
-####################################################################################################################
-
+print 'generating submission file................'
 result_file = open(data_path+'result.pkl','rb')
 preds = pickle.load(result_file)
 

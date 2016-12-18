@@ -249,7 +249,7 @@ da = pd.merge(da,nomprov_info,how='left',on='nomprov')
 da.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
 
 # fill nan (maybe have some)
-da.fillna(value=0)
+da.fillna(value=0,inplace=True)
 
 print da.shape
 

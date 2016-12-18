@@ -196,7 +196,7 @@ for mouth_item in mouth_list:
     df.drop(['canal_entrada','nomprov'],axis=1,inplace=True)
 
     # fill nan (maybe have some)
-    df.fillna(value=0)
+    df.fillna(value=0,inplace=True)
 
     # final shape
     print df.shape
