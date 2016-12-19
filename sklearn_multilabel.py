@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
+from sklearn import cross_validation
+from sklearn import grid_search
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from xgboost.sklearn import XGBClassifier
 import cPickle as pickle
@@ -9,7 +10,7 @@ import cPickle as pickle
 print 'loading data set'
 
 data_path = 'input/'
-classifier = OneVsRestClassifier(XGBClassifier(max_depth=10,silent=False))
+
 
 f_train_x = open(data_path+'trainset.pkl','rb')
 f_train_y = open(data_path+'label.pkl','rb')
@@ -27,7 +28,27 @@ f_train_y.close()
 print trainset.shape
 print label.shape
 
-print 'training ............'
+# train_x,test_x,train_y,test_y = cross_validation.train_test_split(trainset,label,test_size=0.2)
+#
+# print train_x.shape
+# print train_y.shape
+# print test_x.shape
+# print test_y.shape
+
+# print 'grid searching.....................'
+#
+# for i in [10,20,30,40,100]:
+#     print i
+#     classifier = OneVsRestClassifier(XGBClassifier(n_estimators=27,max_depth=7,min_child_weight=1,colsample_bytree=0.9,subsample=0.8,gamma=0.3,reg_alpha=10,learning_rate=0.2,silent=True))
+#
+#     # print 'training ............'
+#     # print cross_validation.cross_val_score(classifier,train_x,train_y,cv = 5)
+#
+#     print 'testing.............'
+#     classifier.fit(train_x,train_y)
+#     print classifier.score(test_x,test_y)
+
+classifier = OneVsRestClassifier(XGBClassifier(n_estimators=27,max_depth=7,min_child_weight=1,colsample_bytree=0.9,subsample=0.8,gamma=0.3,reg_alpha=10,learning_rate=0.2,silent=True))
 classifier.fit(trainset,label)
 
 print "Predicting............."

@@ -26,16 +26,16 @@ f_train_y.close()
 def runXGB(trainset, label, seed_val=0):
     param = {}
     param['objective'] = 'multi:softprob'
-    param['eta'] = 0.1
-    param['max_depth'] = 10
+    param['eta'] = 0.2
+    param['max_depth'] = 7
     param['silent'] = 0
     param['num_class'] = 22
     param['eval_metric'] = "mlogloss"
     param['min_child_weight'] = 1
-    param['subsample'] = 0.9
-    param['colsample_bytree'] = 1
+    param['subsample'] = 0.8
+    param['colsample_bytree'] = 0.9
     param['seed'] = seed_val
-    num_rounds = 50
+    num_rounds = 27
 
     plst = list(param.items())
     xgtrain = xgb.DMatrix(trainset, label=label)
