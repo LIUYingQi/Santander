@@ -8,6 +8,9 @@ mouth_itr_list = ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-2
               ,'2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28','2016-01-28','2016-02-28'
               ,'2016-03-28','2016-04-28']
 
+mouth_list = ['2015-03-28','2015-04-28']
+mouth_itr_list = ['2015-04-28','2015-05-28']
+
 def status_change(x):
     diffs = x.diff().fillna(0)# first occurrence will be considered Maintained,
     #which is a little lazy. A better way would be to check if
